@@ -1,0 +1,434 @@
+/* =========================================================
+   Happy Birthday Mom - styles
+   ========================================================= */
+
+/* ---------- settings ---------- */
+:root {
+  /* colors (only show where you have no image) */
+  --inside-bg: #fff1dc;
+  --door-left: #440056;
+  --door-right: #004408;
+  --letter-color: #ffffff;
+
+  /* front photo on the closed card (side is set in index.html) */
+  --front-photo-x: 46%;     /* left / right, measured inside its door */
+  --front-photo-y: 70%;     /* up / down: bigger = lower */
+  --front-photo-size: 90vh;
+
+  /* letters (bottom middle) */
+  --letters-bottom: 5vh;    /* gap under the letters */
+  --letter-size: 11vh;      /* letter width */
+
+  /* bow (on the seam) */
+  --bow-y: 60%;
+  --bow-size: 22vh;
+
+  /* cake */
+  --cake-w: 64vh;
+  --cake-h: 52vh;
+  --cake-y: 56%;            /* up / down on the screen */
+
+  /* candles */
+  --candle-gap: 4.1vh;      /* space between candles: smaller = closer together */
+  --candle-row: 80%;        /* candle row height on the cake: bigger = higher */
+  --candle-w: 4.1vh;
+  --candle-h: 9.2vh;
+  --flame-w: 4.1vh;
+  --flame-h: 5.2vh;
+
+  /* cake text */
+  --cake-text-w: 100%;      /* width, compared to the cake */
+  --cake-text-h: 26%;       /* height, compared to the cake */
+  --cake-text-bottom: 3%;   /* up / down on the cake */
+  --cake-text-glow: #ffffff; /* thin outline that hugs the letters */
+
+  /* falling confetti size */
+  --confetti-size: 5vh;
+
+  /* play / pause / restart buttons */
+  --button-size: 15vh;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--inside-bg);
+  font-family: system-ui, sans-serif;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- placeholder / PNG system ---------- */
+.ph-inner {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 100%;
+  place-items: center;
+  line-height: 1;
+  text-align: center;
+}
+.ph-inner img {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* anything positioned with --x / --y / --r / --w */
+.spot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  rotate: var(--r, 0deg);
+  font-size: calc(var(--w) * 0.8);
+}
+
+/* =========================================================
+   INSIDE OF THE CARD
+   ========================================================= */
+.inside {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background-color: var(--inside-bg);
+  background-size: cover;
+  background-position: center;
+}
+
+/* .world is the "camera": script.js moves and scales it to zoom on photos */
+.world {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+}
+
+.main-floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------- cake ---------- */
+.cake-wrap {
+  position: absolute;
+  left: 50%;
+  top: var(--cake-y);
+  width: var(--cake-w);
+  height: var(--cake-h);
+  translate: -50% -50%;
+}
+.cake {
+  position: absolute;
+  inset: 0;
+  font-size: calc(var(--cake-h) * 0.75);
+}
+
+/* candles are spread evenly around the middle of the cake (--i is 1 to 10) */
+.candle {
+  position: absolute;
+  left: calc(50% + (var(--i) - 5.5) * var(--candle-gap));
+  bottom: var(--candle-row);
+  width: var(--candle-w);
+  height: var(--candle-h);
+  translate: -50% 0;
+  font-size: calc(var(--candle-h) * 0.75);
+}
+
+.flame {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;            /* sits on top of the wick */
+  width: var(--flame-w);
+  height: var(--flame-h);
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  font-size: var(--flame-w);
+  z-index: 1;
+}
+.flame .ph-inner { transform-origin: 50% 100%; }
+
+.cake-text {
+  position: absolute;
+  left: 50%;
+  bottom: var(--cake-text-bottom);
+  width: var(--cake-text-w);
+  height: var(--cake-text-h);
+  translate: -50% 0;
+  font-size: 4vh;
+  font-weight: 800;
+  color: #3a2a4d;
+  /* a thin glow around the letters so they stand out from the cake */
+  filter:
+    drop-shadow(0 0 0.25vh var(--cake-text-glow))
+    drop-shadow(0 0 0.25vh var(--cake-text-glow))
+    drop-shadow(0 0.3vh 0.6vh rgba(0, 0, 0, 0.25));
+}
+
+/* ---------- photos ---------- */
+.photo {
+  aspect-ratio: 4 / 5;
+  cursor: pointer;
+  filter: drop-shadow(0 0.6vh 0.8vh rgba(0, 0, 0, 0.25));
+  transition: filter 0.25s, translate 0.25s, scale 0.25s;
+}
+/* hover: glows and rises a little (not while a photo is zoomed in) */
+.world:not(.is-zoomed) .photo:hover {
+  translate: -50% calc(-50% - 1.5vh);
+  scale: 1.04;
+  filter:
+    drop-shadow(0 0 1.5vh rgba(255, 255, 255, 0.95))
+    drop-shadow(0 1.5vh 1.5vh rgba(0, 0, 0, 0.3))
+    brightness(1.08);
+}
+/* the zoomed-in photo also glows and lifts when hovered, to show it can be clicked to go back
+   (smaller numbers here because the whole view is zoomed in) */
+.world.is-zoomed .photo.zoomed-in:hover {
+  translate: -50% calc(-50% - 0.8vh);
+  filter:
+    drop-shadow(0 0 0.9vh rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0.9vh 0.9vh rgba(0, 0, 0, 0.3))
+    brightness(1.08);
+}
+
+/* ---------- floating things ---------- */
+.kind-extra { aspect-ratio: 4 / 5; }
+.kind-person,
+.kind-pet { filter: drop-shadow(0 0.4vh 0.6vh rgba(0, 0, 0, 0.2)); }
+
+/* =========================================================
+   CONFETTI (3 layers: back, middle, front)
+   ========================================================= */
+.confetti-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.confetti-front {
+  position: fixed;
+  z-index: 10;
+  overflow: hidden;
+}
+.confetti {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--confetti-size);
+  height: var(--confetti-size);
+  font-size: calc(var(--confetti-size) * 0.8);
+}
+
+/* =========================================================
+   ZOOMED-IN EXTRAS
+   ========================================================= */
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* =========================================================
+   FRONT OF THE CARD (double doors)
+   ========================================================= */
+.front {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  perspective: 1600px;
+}
+.door {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+.door-left {
+  left: 0;
+  transform-origin: left center;
+  background-color: var(--door-left);
+  box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.15);
+}
+.door-right {
+  right: 0;
+  transform-origin: right center;
+  background-color: var(--door-right);
+  box-shadow: inset 2px 0 0 rgba(0, 0, 0, 0.15);
+}
+
+/* front photo: sits on one door and swings open with it */
+.front-photo {
+  position: absolute;
+  left: var(--front-photo-x);
+  top: var(--front-photo-y);
+  width: var(--front-photo-size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  font-size: calc(var(--front-photo-size) * 0.6);
+}
+.front[data-photo-side="left"]  .door-right .front-photo,
+.front[data-photo-side="right"] .door-left  .front-photo { display: none; }
+
+/* ---------- letters (bottom middle) ---------- */
+.letters {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: var(--letters-bottom);
+  gap: 1.5vh;
+}
+.line {
+  display: flex;
+  gap: 1vh;
+}
+.letter {
+  width: var(--letter-size);
+  height: calc(var(--letter-size) * 1.3);
+  font-size: var(--letter-size);
+  font-family: "Arial Black", Impact, sans-serif;
+  color: var(--letter-color);
+  text-shadow: 0 0.5vh 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- bow ---------- */
+.bow {
+  position: fixed;
+  left: 50%;
+  top: var(--bow-y);
+  width: var(--bow-size);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: 50;
+  font-size: calc(var(--bow-size) * 0.75);
+}
+
+/* bow pulses and glows until it's clicked */
+.bow .ph-inner {
+  animation: bow-pulse 1.4s ease-in-out infinite;
+}
+.bow.clicked .ph-inner {
+  animation: none;
+}
+@keyframes bow-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 2.5vh rgba(255, 255, 255, 0.95));
+  }
+}
+
+/* "click here!" on the bow */
+.bow-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: "Chewy", "Comic Sans MS", cursive;
+  font-size: 4.5vh;
+  color: #ffffff;
+  text-shadow: 0 0.35vh 0 #ff5fa2, 0 0 1.5vh rgba(255, 95, 162, 0.6);
+  animation: label-bob 1.4s ease-in-out infinite;
+  transition: opacity 0.2s;
+}
+.bow.clicked .bow-label {
+  opacity: 0;
+  animation: none;
+}
+@keyframes label-bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50%      { transform: translateY(-1vh) rotate(4deg); }
+}
+
+/* =========================================================
+   CORNER BUTTONS
+   ========================================================= */
+.btn-music,
+.restart {
+  position: fixed;
+  top: 1.5vh;
+  width: var(--button-size);
+  height: var(--button-size);
+  z-index: 100;
+  font-size: calc(var(--button-size) * 0.7);
+  transition: translate 0.2s, scale 0.2s, filter 0.2s;
+}
+/* hover: glows and rises a little */
+.btn-music:hover,
+.restart:hover {
+  translate: 0 -1vh;
+  scale: 1.06;
+  filter: drop-shadow(0 0 1.5vh rgba(255, 255, 255, 0.95)) brightness(1.08);
+}
+.btn-music { right: 2vh; }
+.restart   { left: 2vh; }
+
+.btn-music span {
+  position: absolute;
+  inset: 0;
+}
+.btn-music .icon-pause { display: none; }
+.btn-music.on .icon-play { display: none; }
+.btn-music.on .icon-pause { display: block; }
+
+.now-playing {
+  position: fixed;
+  left: 2vh;
+  bottom: 1.5vh;
+  z-index: 100;
+  font-size: 1.6vh;
+  color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* =========================================================
+   PRESS D: shows every item's name (for layout.js)
+   ========================================================= */
+.debug [data-key] { outline: 1px dashed rgba(255, 0, 120, 0.7); }
+.debug [data-key]::after {
+  content: attr(data-key);
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  translate: -50% 0;
+  rotate: calc(var(--r, 0deg) * -1);
+  padding: 2px 5px;
+  background: #222;
+  color: #fff;
+  font: 600 11px/1.2 system-ui, sans-serif;
+  white-space: nowrap;
+  border-radius: 3px;
+  z-index: 5;
+}

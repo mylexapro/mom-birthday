@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happy Birthday Mom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!--
+    Anything with data-img shows its emoji until that image loads.
+    Most of the floating stuff (icons, flowers, people, pets, extras, confetti)
+    is created by script.js using the lists in layout.js.
+  -->
+
+  <!-- ================= INSIDE OF THE CARD (full screen) ================= -->
+  <div class="inside" data-bg="images/inside-background.PNG">
+
+    <!-- confetti layer 1: behind everything -->
+    <div class="confetti-layer confetti-back"></div>
+
+    <div class="world">
+
+      <!-- floating icons + flowers on the main screen (filled in by script.js) -->
+      <div class="main-floaters"></div>
+
+      <!-- confetti layer 2: in front of the icons, behind the cake and photos -->
+      <div class="confetti-layer confetti-middle"></div>
+
+      <!-- CAKE + CANDLES + FLAMES (flame N sits on candle N) -->
+      <div class="cake-wrap">
+        <div class="cake" data-img="images/cake.PNG" data-emoji="🎂"></div>
+
+        <div class="candle" style="--i:1"  data-img="images/candle1.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame1.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:2"  data-img="images/candle2.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame2.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:3"  data-img="images/candle3.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame3.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:4"  data-img="images/candle4.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame4.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:5"  data-img="images/candle5.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame5.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:6"  data-img="images/candle6.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame6.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:7"  data-img="images/candle7.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame7.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:8"  data-img="images/candle8.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame8.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:9"  data-img="images/candle9.PNG"  data-emoji="🕯️"><div class="flame" data-img="images/flame9.PNG"  data-emoji="🔥"></div></div>
+        <div class="candle" style="--i:10" data-img="images/candle10.PNG" data-emoji="🕯️"><div class="flame" data-img="images/flame10.PNG" data-emoji="🔥"></div></div>
+
+        <div class="cake-text" data-img="images/cake-text.PNG" data-emoji="✍️ HAPPY BIRTHDAY MOM"></div>
+      </div>
+
+      <!-- CLICKABLE FRAMED PHOTOS (7) -->
+      <button class="photo spot" data-photo="1" data-key="photo1" aria-label="Photo 1" data-img="images/photo1.PNG" data-emoji="🖼️" style="--x:12%; --y:26%; --r:-8deg; --w:26vh"></button>
+      <button class="photo spot" data-photo="2" data-key="photo2" aria-label="Photo 2" data-img="images/photo2.PNG" data-emoji="🖼️" style="--x:12%; --y:72%; --r:6deg;  --w:26vh"></button>
+      <button class="photo spot" data-photo="3" data-key="photo3" aria-label="Photo 3" data-img="images/photo3.PNG" data-emoji="🖼️" style="--x:28%; --y:78%; --r:-4deg; --w:26vh"></button>
+      <button class="photo spot" data-photo="4" data-key="photo4" aria-label="Photo 4" data-img="images/photo4.PNG" data-emoji="🖼️" style="--x:72%; --y:78%; --r:5deg;  --w:26vh"></button>
+      <button class="photo spot" data-photo="5" data-key="photo5" aria-label="Photo 5" data-img="images/photo5.PNG" data-emoji="🖼️" style="--x:88%; --y:70%; --r:-7deg; --w:26vh"></button>
+      <button class="photo spot" data-photo="6" data-key="photo6" aria-label="Photo 6" data-img="images/photo6.PNG" data-emoji="🖼️" style="--x:88%; --y:26%; --r:8deg;  --w:26vh"></button>
+      <button class="photo spot" data-photo="7" data-key="photo7" aria-label="Photo 7" data-img="images/photo7.PNG" data-emoji="🖼️" style="--x:29%; --y:20%; --r:-3deg; --w:26vh"></button>
+
+    </div>
+  </div>
+
+  <!-- confetti layer 3: in front of everything on the inside -->
+  <div class="confetti-layer confetti-front"></div>
+
+  <!-- ================= ZOOMED-IN EXTRAS (one panel per photo, made in script.js) ================= -->
+  <div class="details"></div>
+
+  <!-- ================= FRONT OF THE CARD: grand double doors ================= -->
+  <!-- front photo side: change data-photo-side to "left" or "right" -->
+  <div class="front" data-photo-side="left">
+    <div class="door door-left" data-bg="images/door-left.PNG">
+      <div class="front-photo" data-img="images/front-photo.PNG" data-emoji="📷"></div>
+    </div>
+    <div class="door door-right" data-bg="images/door-right.PNG">
+      <div class="front-photo" data-img="images/front-photo.PNG" data-emoji="📷"></div>
+    </div>
+  </div>
+
+  <!-- HAPPY / BIRTHDAY: each letter is its own PNG -->
+  <div class="letters">
+    <div class="line">
+      <div class="letter" data-img="images/letter1.PNG" data-emoji="H"></div>
+      <div class="letter" data-img="images/letter2.PNG" data-emoji="A"></div>
+      <div class="letter" data-img="images/letter3.PNG" data-emoji="P"></div>
+      <div class="letter" data-img="images/letter4.PNG" data-emoji="P"></div>
+      <div class="letter" data-img="images/letter5.PNG" data-emoji="Y"></div>
+    </div>
+    <div class="line">
+      <div class="letter" data-img="images/letter6.PNG"  data-emoji="B"></div>
+      <div class="letter" data-img="images/letter7.PNG"  data-emoji="I"></div>
+      <div class="letter" data-img="images/letter8.PNG"  data-emoji="R"></div>
+      <div class="letter" data-img="images/letter9.PNG"  data-emoji="T"></div>
+      <div class="letter" data-img="images/letter10.PNG" data-emoji="H"></div>
+      <div class="letter" data-img="images/letter11.PNG" data-emoji="D"></div>
+      <div class="letter" data-img="images/letter12.PNG" data-emoji="A"></div>
+      <div class="letter" data-img="images/letter13.PNG" data-emoji="Y"></div>
+    </div>
+  </div>
+
+  <!-- THE BOW (click to open) -->
+  <button class="bow" aria-label="Open the card" data-img="images/bow.PNG" data-emoji="🎀">
+    <span class="bow-label">click here!</span>
+  </button>
+
+  <!-- ================= BUTTONS IN THE CORNERS ================= -->
+  <button class="btn-music" aria-label="Play or pause music">
+    <span class="icon-play"  data-img="images/btn-play.PNG"  data-emoji="▶️"></span>
+    <span class="icon-pause" data-img="images/btn-pause.PNG" data-emoji="⏸️"></span>
+  </button>
+  <button class="restart" aria-label="Close the card" data-img="images/btn-restart.PNG" data-emoji="🔄"></button>
+
+  <!-- shows which song should be playing (handy while building, delete later) -->
+  <div class="now-playing"></div>
+
+  <!-- ================= MUSIC (we'll match these to your files later) ================= -->
+  <audio data-song="front"  src="music/song-front.mp3"   loop preload="auto"></audio>
+  <audio data-song="inside" src="music/song-inside.mp3"  loop preload="auto"></audio>
+  <audio data-song="photo1" src="music/song-photo-1.mp3" loop preload="auto"></audio>
+  <audio data-song="photo2" src="music/song-photo-2.mp3" loop preload="auto"></audio>
+  <audio data-song="photo3" src="music/song-photo-3.mp3" loop preload="auto"></audio>
+  <audio data-song="photo4" src="music/song-photo-4.mp3" loop preload="auto"></audio>
+  <audio data-song="photo5" src="music/song-photo-5.mp3" loop preload="auto"></audio>
+  <audio data-song="photo6" src="music/song-photo-6.mp3" loop preload="auto"></audio>
+  <audio data-song="photo7" src="music/song-photo-7.mp3" loop preload="auto"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="layout.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
